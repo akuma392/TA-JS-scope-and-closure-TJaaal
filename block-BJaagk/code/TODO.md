@@ -26,13 +26,8 @@ function percentage(marks, total) {
   return (marks * 100) / total;
 }
 // Your answer
+Function Declaration
 
-var perctange = function percentage(marks, total) {
-  return (marks * 100) / total;
-};
-var perctange = function (marks, total) {
-  return (marks * 100) / total;
-};
 ```
 
 ```js
@@ -40,9 +35,11 @@ let percentage = function percentage(marks, total) {
   return (marks * 100) / total;
 };
 
+ Function Expression
 function percentage(marks, total) {
   return (marks * 100) / total;
 }
+Function Declaration
 ```
 
 ```js
@@ -50,25 +47,19 @@ let percentage = function (marks, total) {
   return (marks * 100) / total;
 };
 
-function percantage(marks, total) {
-  return (marks * 100) / total;
-}
+ Function Expression
 ```
 
 ```js
 let percentage = (marks, total) => {
   return (marks * 100) / total;
 };
-function percantage(marks, total) {
-  return (marks * 100) / total;
-}
+ Function Expression
 ```
 
 ```js
 let percentage = (marks, total) => (marks * 100) / total;
-function percantage(marks, total) {
-  return (marks * 100) / total;
-}
+ Function Expression
 ```
 
 3. Why is a function definition an expression in JavaScript? Give one example of function expression.
@@ -91,7 +82,7 @@ function add(a, b) {
 }
 
 let five = add(2, 3); // valid
-five = add; // invalid as add is just function reference which is sets of statement
+five = add; //valid
 five = five(10, 11); // valid
 five = function () {
   return "Hello";
@@ -130,6 +121,10 @@ hello.user = "Sam"; // valid  as function is type of object so we can treat it a
 9. What is higher order function explain with an example.
 
 higher order function is special type of function which can return a function or also it accept a function as parameter
+
+function HOF(cb){
+return cb;
+}
 
 10. Explain what is callback function. Why you can pass a function inside a function?
 
