@@ -77,9 +77,9 @@ When `forEach` function is called it returns another function. When the returned
 function forEach(arr) {
   let index = 0;
   function inner() {
-    return arr[index];
+    return arr[index++];
   }
-  index++;
+
   return inner;
 }
 
@@ -97,7 +97,10 @@ The returned function accepts a string `prefix` and returns `prefix` and `title`
 
 ```js
 function addDesignation(title) {
-  // your code goes here
+  function inner(desg) {
+    return desg + " " + title;
+  }
+  return inner;
 }
 
 let sales = addDesignation("Salesman");
@@ -115,8 +118,18 @@ manager("Head"); // Head Manager
 - `current` will return the current salary returns the updated salary
 
 ```js
-function changeSalary() {
-  // Your code goes here
+function changeSalary(cSal) {
+  return {
+    raise: function () {
+      return cSal + 500;
+    },
+    lower: function () {
+      return cSal - 500;
+    },
+    current: function () {
+      return cSal;
+    },
+  };
 }
 
 let sam = changeSalary(2000);
@@ -133,7 +146,19 @@ arya.lower(); // 3500
 - `setLastName`: accepts a parameter last name using which updates the firstName and return the updated full name
 
 ```js
-// Your code goes here
+function nameFactory(firstName, lastName) {
+  return {
+    getFullName: function () {
+      return `${firstName} ${lastName}`;
+    },
+    setFirstName: function (fn) {
+      return `${fn} ${lastName}`;
+    },
+    setLastName: function (ln) {
+      return `${firstName} ${ln}`;
+    },
+  };
+}
 
 let arya = nameFactory("Arya", "Stark");
 arya.getFullName(); // "Arya Stark"
@@ -146,8 +171,13 @@ arya.setLastName("Lannister"); // "Jon Lannister"
 The returned function accepts a string (children) and returns the children with the tag you passed.
 
 ```js
-function createTag() {
-  // your code goes here
+function createTag(elm) {
+  function inner(children) {
+    let elm = document.createElement("elm");
+    elm.innerText = children;
+    return elm;
+  }
+  return inner;
 }
 
 let bold = createTag("b");
