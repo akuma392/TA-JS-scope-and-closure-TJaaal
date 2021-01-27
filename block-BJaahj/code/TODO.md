@@ -3,13 +3,31 @@
 1. Construct a function `objOfMatches` that accepts two arrays and a callback. `objOfMatches` will build an object and return it. To build the object, `objOfMatches` will test each element of the first array using the callback to see if the output matches the corresponding element (by index) of the second array. If there is a match, the element from the first array becomes a key in an object, and the element from the second array becomes the corresponding value.
 
 ```js
-function objOfMatches(array1, array2, callback) {}
+function objOfMatches(array1, array2, callback) {
+  let arrayUpperCase = [];
+  if (array1.length !== array2.length) {
+    return "different arrays";
+  } else {
+    for (let i = 0; i < array1.length; i++) {
+      arrayUpperCase[i] = callback(array1[i]);
+    }
+
+    let arrObj = {};
+    for (let j = 0; j < array1.length; j++) {
+      if (array2[j] == arrayUpperCase[j]) {
+        arrObj[array1[j]] = arrayUpperCase[j];
+      }
+    }
+    console.log(arrObj);
+    return arrObj;
+  }
+}
 
 // TEST
 console.log(
   objOfMatches(
-    ['hi', 'howdy', 'bye', 'later', 'hello'],
-    ['HI', 'Howdy', 'BYE', 'LATER', 'hello'],
+    ["hi", "howdy", "bye", "later", "hello"],
+    ["HI", "Howdy", "BYE", "LATER", "hello"],
     function (str) {
       return str.toUpperCase();
     }
@@ -20,20 +38,27 @@ console.log(
 2. Construct a function `multiMap` that will accept two arrays: an array of values and an array of callbacks. `multiMap` will return an object whose keys match the elements in the array of values. The corresponding values that are assigned to the keys will be arrays consisting of outputs from the array of callbacks, where the input to each callback is the key.
 
 ```js
-function multiMap(arrVals, arrCallbacks) {}
+function multiMap(arrVals, arrCallbacks) {
+  let arrObj = {};
+
+  for (let i = 0; i < arrVals.length; i++) {
+    let output = [];
+    output = arrCallbacks.map((elm) => elm(arrVals[i]));
+    arrObj[arrVals[i]] = output;
+  }
+  return arrObj;
+}
 
 // TEST
 console.log(
   multiMap(
-    ['catfood', 'glue', 'beer'],
+    ["catfood", "glue", "beer"],
     [
       function (str) {
         return str.toUpperCase();
       },
       function (str) {
-        return (
-          str[0].toUpperCase() + str.slice(1).toLowerCase()
-        );
+        return str[0].toUpperCase() + str.slice(1).toLowerCase();
       },
       function (str) {
         return str + str;
@@ -50,21 +75,37 @@ To build the object, `objOfMatchesWithArray` will test each element of the first
 The final output from the third array will be matched agains the same indexed element of second array. If there is a match, the element from the first array becomes a key in an object, and the element from the second array becomes the corresponding value.
 
 ```js
-function objOfMatchesWithArray(array1, array2, callback) {}
+function objOfMatchesWithArray(array1, array2, callback) {
+  let finalArr = {};
+  let arrObj = [];
+
+  arrObj = array1.map((elm) => {
+    return callback.reduce((acc1, cv1) => {
+      acc1 = cv1(acc1);
+      return acc1;
+    }, elm);
+  });
+
+  for (let j = 0; j < array1.length; j++) {
+    if (array2[j] == arrObj[j]) {
+      finalArr[array1[j]] = arrObj[j];
+    }
+  }
+
+  return finalArr;
+}
 
 // TEST
 console.log(
   objOfMatchesWithArray(
-    ['hi', 'howdy', 'bye', 'later', 'hello'],
-    ['HiHi', 'HowdyHowdy', 'BYEBYE', 'LATER', 'helloHello'],
+    ["hi", "howdy", "bye", "later", "hello"],
+    ["HiHi", "HowdyHowdy", "BYEBYE", "LATER", "helloHello"],
     [
       function (str) {
         return str.toUpperCase();
       },
       function (str) {
-        return (
-          str[0].toUpperCase() + str.slice(1).toLowerCase()
-        );
+        return str[0].toUpperCase() + str.slice(1).toLowerCase();
       },
       function (str) {
         return str + str;
@@ -81,20 +122,27 @@ To build the object, `objectWithArrayValues` will pass each value of the first a
 In the final object the key will be the value form the first array like `hi` and value will be an array of values returned from each function like `['HI', 'Hi', 'HiHi']`
 
 ```js
-function objOfMatchesWithArray(array1, array2, callback) {}
+function objOfMatchesWithArray(array1, callback) {
+  let arrObj = {};
+  let output = [];
+
+  for (let i = 0; i < array1.length; i++) {
+    output = callback.map((elm) => elm(array1[i]));
+    arrObj[array1[i]] = output;
+  }
+  return arrObj;
+}
 
 // TEST
 console.log(
   objOfMatchesWithArray(
-    ['hi', 'howdy', 'bye'],
+    ["hi", "howdy", "bye"],
     [
       function (str) {
         return str.toUpperCase();
       },
       function (str) {
-        return (
-          str[0].toUpperCase() + str.slice(1).toLowerCase()
-        );
+        return str[0].toUpperCase() + str.slice(1).toLowerCase();
       },
       function (str) {
         return str + str;
@@ -108,13 +156,13 @@ console.log(
 
 ```js
 function sayHi() {
-  console.log('Hi');
+  console.log("Hi");
 }
 function sayHello() {
-  console.log('Hello');
+  console.log("Hello");
 }
 function sayHey() {
-  console.log('Hey');
+  console.log("Hey");
 }
 ```
 
@@ -123,16 +171,24 @@ Create a function named `schedule` which accept two arguments an array of functi
 The function `schedule` will execute the function at first index after the value in value on first index in second array. i.e execute `sayHi` after `1` second and `sayHello` after `2` second.
 
 ```js
-function schedule() {}
+function schedule(arrFn, arrInterval) {
+  if (arrFn.length !== arrInterval.length) {
+    return "Invalid Input";
+  } else {
+    return arrFn.map((elm, index) =>
+      setInterval(elm(), arrInterval[index] * 1000)
+    );
+  }
+}
 
 function sayHi() {
-  console.log('Hi');
+  console.log("Hi");
 }
 function sayHello() {
-  console.log('Hello');
+  console.log("Hello");
 }
 function sayHey() {
-  console.log('Hey');
+  console.log("Hey");
 }
 schedule([sayHi, sayHello, sayHey], [2, 3, 4]);
 
