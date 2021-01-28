@@ -175,7 +175,7 @@ function schedule(arrFn, arrInterval) {
   if (arrFn.length !== arrInterval.length) {
     return "Invalid Input";
   } else {
-    return arrFn.map((elm, index) =>
+    arrFn.forEach((elm, index) =>
       setInterval(elm(), arrInterval[index] * 1000)
     );
   }
