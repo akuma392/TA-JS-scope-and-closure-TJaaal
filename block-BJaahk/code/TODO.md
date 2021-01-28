@@ -6,13 +6,19 @@ The returned function accepts a sentence. If the sentence contains the `fromWord
 
 ```js
 function censor(fromWord, toWord) {
-  //  Your code goes here
+  return function (str) {
+    if (str.includes(fromWord)) {
+      console.log(str.replace(fromWord, toWord));
+    } else {
+      return;
+    }
+  };
 }
 
-let censorSentence = censor('World', 'Sam');
-censorSentence('Hello World'); // Hello Sam
+let censorSentence = censor("World", "Sam");
+censorSentence("Hello World"); // Hello Sam
 
-let censorQuote = censor('die', 'live');
+let censorQuote = censor("die", "live");
 censorQuote(`all men must die`); // all men must live
 ```
 
@@ -25,16 +31,33 @@ The returned function either accepts two parameter or one parameter.
 
 ```js
 function multipleCensor() {
-  //  Your code goes here
+  let fromWord = [];
+  let toWord = [];
+  function inner(str1, str2) {
+    if (Boolean(str2)) {
+      fromWord.push(str1);
+      toWord.push(str2);
+      console.log(toWord, fromWord);
+    } else {
+      let output;
+      fromWord.forEach((elm, index) => {
+        if (str1.includes(elm)) {
+          output = str1.replace(elm, toWord[index]);
+        }
+      });
+      console.log(output);
+    }
+  }
+  return inner;
 }
 
 let censorQuote = multipleCensor();
-censorQuote('forget', 'remember'); // two parameter no return
-censorQuote('never', 'always'); // two parameter no return
-censorQuote('hurt you', 'love you'); // two parameter no return
+censorQuote("forget", "remember"); // two parameter no return
+censorQuote("never", "always"); // two parameter no return
+censorQuote("hurt you", "love you"); // two parameter no return
 
 censorQuote(
-  'Never forget what you are. The rest of the world will not. Wear it like armor, and it can never be used to hurt you.'
+  "Never forget what you are. The rest of the world will not. Wear it like armor, and it can never be used to hurt you."
 );
 
 // Returns: "Never remember what you are. The rest of the world will not. Wear it like armor, and it can always be used to love you."
@@ -49,35 +72,66 @@ The returned function accepts one parameter.
 - If the parameter is the same as the password it will return the object in which we stored the values.
 
 ```js
-function createCache() {
-  // Your code goes here
+function createCache(callback, str) {
+  let arrObj = {};
+
+  return function (inp) {
+    if (Number.isInteger(inp)) {
+      let output = callback(inp);
+      arrObj[inp] = output;
+      return output;
+    } else if (inp == str) {
+      return arrObj;
+    }
+  };
 }
 
 function add10(num) {
   return num + 10;
 }
 
-let addCache = createCache(add10, 'foo');
+let addCache = createCache(add10, "foo");
 
 addCache(12); // 22
 addCache(100); // 110
 addCache(1); // 11
 
-addCache('foo'); // {12: 22, 100: 110, 1: 11}
+addCache("foo"); // {12: 22, 100: 110, 1: 11}
 ```
 
 4. Change the above function in such a way that when the returned function is called with any other value than password. It should first check the object where we are storing the argument and return value. If the key is present return the value form the object itself. Otherwise call the callback function with the parameter.
 
 ```js
-function createCache() {
-  // Your code goes here
+function createCache(callback, str) {
+  let arrObj = {};
+
+  return function (inp) {
+    let arrObjKey = Object.keys(arrObj);
+    let arrObjValues = Object.values(arrObj);
+
+    if (Number.isInteger(inp)) {
+      for (let i = 0; i < arrObjKey.length; i++) {
+        if (Number(arrObjKey[i]) !== inp) {
+          let output = callback(inp);
+          arrObj[inp] = output;
+          return output;
+          return;
+        } else {
+          console.log(`key is ${arrObjKey}`);
+          return arrObjValus[i];
+        }
+      }
+    } else if (inp == str) {
+      return arrObj;
+    }
+  };
 }
 
 function add10(num) {
   return num + 10;
 }
 
-let addCache = createCache(add10, 'foo');
+let addCache = createCache(add10, "foo");
 
 addCache(12); // 22
 addCache(100); // 110
@@ -85,5 +139,5 @@ addCache(100); // 110 (callback should not be called)
 addCache(100); // 110 (callback should not be called)
 addCache(1); // 11
 
-addCache('foo'); // {12: 22, 100: 110, 1: 11}
+addCache("foo"); // {12: 22, 100: 110, 1: 11}
 ```
