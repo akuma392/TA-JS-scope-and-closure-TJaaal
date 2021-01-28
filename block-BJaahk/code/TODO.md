@@ -102,29 +102,54 @@ addCache("foo"); // {12: 22, 100: 110, 1: 11}
 4. Change the above function in such a way that when the returned function is called with any other value than password. It should first check the object where we are storing the argument and return value. If the key is present return the value form the object itself. Otherwise call the callback function with the parameter.
 
 ```js
+// function createCache(callback, str) {
+//   let arrObj = {};
+
+//   return function (inp) {
+//     // let arrObjKey = Object.keys(arrObj);
+//     // let arrObjValues = Object.values(arrObj);
+
+//     if (Number.isInteger(inp)) {
+//       // for (let i = 0; i < arrObjKey.length; i++) {
+//       //   if (Number(arrObjKey[i]) !== inp) {
+//         if(arrObj[inp]){
+//           return arrObj[inp];
+//         }
+//         else {
+//           let output = callback(inp);
+//           arrObj[inp] = output;
+//           return output;
+
+//         //  else {
+//         //   console.log(`key is ${arrObjKey}`);
+//         //   return arrObjValus[i];
+//         }
+//       }
+//     } else if (inp == str) {
+//       return arrObj;
+
+//   };
+// }
 function createCache(callback, str) {
   let arrObj = {};
 
   return function (inp) {
-    let arrObjKey = Object.keys(arrObj);
-    let arrObjValues = Object.values(arrObj);
-
     if (Number.isInteger(inp)) {
-      for (let i = 0; i < arrObjKey.length; i++) {
-        if (Number(arrObjKey[i]) !== inp) {
-          let output = callback(inp);
-          arrObj[inp] = output;
-          return output;
-          return;
-        } else {
-          console.log(`key is ${arrObjKey}`);
-          return arrObjValus[i];
-        }
+      if (arrObj[inp]) {
+        return arrObj[inp];
+      } else {
+        let output = callback(inp);
+        arrObj[inp] = output;
+        return output;
       }
     } else if (inp == str) {
       return arrObj;
     }
   };
+}
+
+function add10(num) {
+  return num + 10;
 }
 
 function add10(num) {
