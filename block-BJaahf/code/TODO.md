@@ -86,6 +86,7 @@ console.log(
 // }
 
 // comment
+// test
 
 function union(...arrays) {
   let first = arrays[0];
