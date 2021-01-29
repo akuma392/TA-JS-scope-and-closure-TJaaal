@@ -46,6 +46,7 @@ var nums = [4, 1, 3];
 var add = function (a, b) {
   return a + b;
 };
+
 reduce(nums, add, 0); //-> 8
 ```
 
